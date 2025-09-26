@@ -2,6 +2,49 @@
 
 This repository contains a production-ready, containerized full‑stack application for collecting and voting on ideas. It includes a FastAPI backend (Python 3.11+, SQLAlchemy 2.x, Alembic) and a Vite + React + TypeScript frontend with Tailwind CSS v4, comprehensive unit tests on both sides, and Dockerized deployment via docker-compose (nginx frontend proxy to the backend).
 
+## 🚀 Quick Start (Local Development)
+
+### Prerequisites
+- **Python 3.11+** (with `python3` command available)
+- **Node.js 20+** (with `pnpm` package manager)
+- **Git** (to clone the repository)
+
+### 1. Clone and Setup
+```bash
+git clone <repository-url>
+cd Crowd
+```
+
+### 2. Start Backend (Terminal 1)
+```bash
+cd backend
+python3 -m venv .venv
+source .venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
+export DATABASE_URL="sqlite:///./app.db"
+export PYTHONPATH=/path/to/Crowd/backend
+alembic upgrade head
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+### 3. Start Frontend (Terminal 2)
+```bash
+cd frontend
+pnpm install
+pnpm dev
+```
+
+### 4. Access the Application
+- **Frontend**: http://localhost:5173
+- **Backend API**: http://localhost:8000/api/v1/
+- **API Documentation**: http://localhost:8000/docs
+
+### 🐳 Alternative: Docker Setup
+If you prefer Docker, see the [Dockerized Deployment](#dockerized-deployment) section below.
+
+---
+
 ### Project Spec
 
 - **Domain summary**: Users submit ideas; others upvote them. List/search/sort ideas; view details; create/update/delete ideas; vote; view vote counts and top ideas.
@@ -57,20 +100,21 @@ README.md
 
 ### Quickstart (Local Dev)
 
-1) Backend (Python 3.11+):
+> **📝 For the easiest setup, see the [Quick Start section above](#-quick-start-local-development)**
 
+**Backend (Python 3.11+):**
 ```bash
 cd backend
-python -m venv .venv && source .venv/bin/activate
+python3 -m venv .venv && source .venv/bin/activate
 pip install -U pip
 pip install -r requirements.txt
 export DATABASE_URL="sqlite:///./app.db"
+export PYTHONPATH=/path/to/Crowd/backend
 alembic upgrade head
 uvicorn app.main:app --reload
 ```
 
-2) Frontend (Node 20+):
-
+**Frontend (Node 20+):**
 ```bash
 cd frontend
 pnpm install
