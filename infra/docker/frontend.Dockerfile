@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.7-labs
+# syntax=docker/dockerfile:1
 FROM node:20-alpine AS build
 WORKDIR /app
 COPY frontend/package.json frontend/tsconfig.json frontend/vite.config.ts frontend/postcss.config.cjs /app/

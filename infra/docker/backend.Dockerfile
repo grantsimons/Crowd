@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.7-labs
+# syntax=docker/dockerfile:1
 FROM python:3.11-slim AS base
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
 WORKDIR /app
@@ -18,15 +18,7 @@ COPY backend /app
 WORKDIR /app
 
 EXPOSE 8000
-HEALTHCHECK CMD python - <<'PY' || exit 1
-import urllib.request
-import os
-url = os.environ.get('HEALTH_URL', 'http://localhost:8000/api/v1/health')
-with urllib.request.urlopen(url, timeout=2) as r:
-    import json
-    data = json.loads(r.read().decode())
-    assert data.get('status') == 'ok'
-PY
+HEALTHCHECK CMD python -c "import urllib.request, os, json; r = urllib.request.urlopen(os.environ.get('HEALTH_URL', 'http://localhost:8000/api/v1/health'), timeout=2); data = json.loads(r.read().decode()); assert data.get('status') == 'ok'"
 
 ENTRYPOINT ["/bin/sh", "-c", "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000"]
 
