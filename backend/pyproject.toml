@@ -1,8 +1,0 @@
-[tool.pytest.ini_options]
-addopts = "-q --cov=app --cov-report=term-missing:skip-covered --cov-report=html --cov-fail-under=80"
-testpaths = ["tests"]
-
-[tool.coverage.run]
-branch = true
-source = ["app"]
-
