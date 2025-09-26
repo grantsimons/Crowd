@@ -1,0 +1,55 @@
+version: '3.9'
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: infra/docker/backend.Dockerfile
+    environment:
+      - DATABASE_URL=sqlite:////data/app.db
+    volumes:
+      - db_data:/data
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8000/api/v1/health"]
+      interval: 15s
+      timeout: 3s
+      retries: 5
+  frontend:
+    build:
+      context: .
+      dockerfile: infra/docker/frontend.Dockerfile
+      args:
+        - VITE_API_URL=/api
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "8080:80"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/"]
+      interval: 15s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  db_data:
+
+# Optional Postgres setup:
+#  postgres:
+#    image: postgres:16-alpine
+#    environment:
+#      - POSTGRES_USER=app
+#      - POSTGRES_PASSWORD=app
+#      - POSTGRES_DB=app
+#    ports:
+#      - "5432:5432"
+#    volumes:
+#      - pg_data:/var/lib/postgresql/data
+#
+# To use Postgres, set DATABASE_URL=postgresql+psycopg://app:app@postgres:5432/app
+# and add dependency on postgres for backend; also ensure psycopg is installed.
+#
+#volumes:
+#  pg_data:
+
