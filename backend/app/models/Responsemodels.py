@@ -5,6 +5,7 @@ from typing import Optional
 
 from sqlalchemy import Index, String, Text, ForeignKey, UniqueConstraint, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from pydantic import BaseModel
 
 from ..core.db import Base
 
@@ -37,7 +38,7 @@ class Vote(Base):
         UniqueConstraint("idea_id", "voter", name="uq_vote_idea_voter"),
     )
 
-class UserRead(Base):
+class UserRead(BaseModel):
     user_id: int
     first_name: str
     last_name: str
