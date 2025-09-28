@@ -37,6 +37,15 @@ class Vote(Base):
         UniqueConstraint("idea_id", "voter", name="uq_vote_idea_voter"),
     )
 
+class UserRead(Base):
+    user_id: int
+    first_name: str
+    last_name: str
+    phone_number: str
+    email: str
+    bio: str
+    age: int
+    vibe: str
 
 # Helpful index for ordering by creation time
 Index("ix_ideas_created", Idea.created_at.desc())
