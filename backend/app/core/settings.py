@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     APP_NAME: str = "Crowd Ideas API"
     DEBUG: bool = False
     DATABASE_URL: str = "sqlite:///./app.db"
-    CORS_ORIGINS: list[str] = ["http://localhost:5173"]
+    CORS_ORIGINS: list[str] = ["*"] 
 
 
 @lru_cache(maxsize=1)

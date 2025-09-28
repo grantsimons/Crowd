@@ -10,7 +10,7 @@ from ..core.db import Base
 
 
 class DBTableUser(Base):
-    __tablename__ = "users"
+    __tablename__ = "user_entries"
 
     entry_id: Mapped[int] = mapped_column(primary_key=True, index=True)
     user_id: Mapped[str] = mapped_column(String(120), nullable=False)

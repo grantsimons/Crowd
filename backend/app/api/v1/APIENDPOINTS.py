@@ -19,9 +19,9 @@ from fastapi import APIRouter, Depends, Query
 # Create FastAPI instance
 
 router = APIRouter()
-alchemyengineUsers = create_engine("sqlite:///../../DBS/user_entries.db")
+alchemyengineUsers = create_engine("sqlite:///./app/DBS/user_entries.db")
 
-@router.post("userCreate")
+@router.post("/userCreate")
 def create_user(user: createUser):
     userObject = DBTableUser(
         user_id=user.user_id,
