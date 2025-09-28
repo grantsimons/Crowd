@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { HttpError, Idea, Ideas } from '../api/client'
+import './index.css'
+
 
 type State =
   | { status: 'loading' }
