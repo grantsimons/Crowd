@@ -2,11 +2,19 @@ from __future__ import annotations
 
 from logging.config import fileConfig
 
+import sys, os
+from pathlib import Path
+BASE_DIR = Path(__file__).resolve().parents[1]
+if str(BASE_DIR) not in sys.path:
+    sys.path.insert(0, str(BASE_DIR))
+
 from sqlalchemy import engine_from_config, pool
 from alembic import context
 
 from app.core.settings import get_settings
 from app.core.db import Base
+# Ensure models are imported so tables are registered on Base.metadata
+from app import models as _models  # noqa: F401
 
 
 config = context.config

@@ -72,3 +72,18 @@ export const Ideas = {
   },
 }
 
+export type User = {
+  id: number
+  username: string
+  password: string
+}
+
+export const Users = {
+  getAll() {
+    return fetchJson<User[]>(`/api/v1/users`)
+  },
+  create(payload: { username: string; password: string }) {
+    return fetchJson<User>(`/api/v1/users`, { method: 'POST', body: JSON.stringify(payload) })
+  }
+}
+

@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import {App} from './App'
 import './index.css'
+import { Users, type User } from '../api/client'  // Add this line
 
 function print(s: any) {
     console.log(s);
@@ -18,34 +19,57 @@ function SignUp() {
         document.title = 'sign up';
     }, []);
 
+    const [userPairs, setUserPairs] = useState<Set<[string, string]>>(new Set());
+
+    useEffect(() => {
+        Users.getAll().then((users) => {
+            const pairs = new Set<[string, string]>(users.map((u: User) => [u.username, u.password]));
+            setUserPairs(pairs);
+        });
+    }, []);
+
+    print(userPairs);
+
     const [username, set_user_name] = useState('');
     const [password, set_password] = useState('');
     const [login_username, set_login_user_name] = useState('');
     const [login_password, set_login_password] = useState('');
-    const [saved_username, set_saved_username] = useState('');
-    const [saved_password, set_saved_password] = useState('');
 
-    function handle_signup(e: React.FormEvent) {
+    async function handle_signup(e: React.FormEvent) {
         e.preventDefault();
-        alert(`username: ${username}, password: ${password}`);
-        set_saved_username(username);
-        set_saved_password(password);
-        set_user_name(''); // clear input
-        set_password('');
-    }
-
-    useEffect(() => {
-        if (saved_username || saved_password) {
-            alert(`saved username: ${saved_username}, saved password: ${saved_password}`);
+        
+        try {
+            // Call the backend API to create a new user
+            const newUser = await Users.create({
+                username: username,
+                password: password
+            });
+            
+            alert(`User created successfully! Username: ${newUser.username}`);
+            
+            // Refresh the user pairs to include the new user
+            const updatedUsers = await Users.getAll();
+            const pairs = new Set<[string, string]>(updatedUsers.map((u: User) => [u.username, u.password]));
+            setUserPairs(pairs);
+            
+            set_user_name(''); // clear input
+            set_password('');
+        } catch (error) {
+            console.error('Error creating user:', error);
+            alert('Failed to create user. Username might already exist.');
         }
-    }, [saved_username, saved_password]);
+    }
 
     const navigate = useNavigate();
 
     function handle_login(e: React.FormEvent) {
         e.preventDefault();
-        if (login_username === saved_username && login_password === saved_password) {
+
+        const savedInPairs = [...userPairs].some(([u, p]) => u === login_username && p === login_password);
+        if (savedInPairs) {
             navigate('/home');
+        } else {
+            alert('stop trying to cheat your way into the system. sign up before you try to login in dumbass');
         }
     }
 
@@ -102,16 +126,11 @@ function SignUp() {
     ); 
 }
 
-function Home() {
-    useEffect(() => { document.title = 'home'; }, []);
-    return (
-        <main>
-            <h1>Home</h1>
-            <p>Logged in!</p>
-        </main>
-    );
+async function fetchUsers() {
+    const users = await Users.getAll();
+    console.log(users);
+    return users;
 }
-
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
