@@ -82,6 +82,9 @@ export const Users = {
   getAll() {
     return fetchJson<User[]>(`/api/v1/users`)
   },
+  getByUsername(username: string) {
+    return fetchJson<User | null>(`/api/v1/users/${username}`)
+  },
   create(payload: { username: string; password: string }) {
     return fetchJson<User>(`/api/v1/users`, { method: 'POST', body: JSON.stringify(payload) })
   }

@@ -48,6 +48,14 @@ def create_user(user_data: UserCreate, db: Session = Depends(get_db)):
     new_user = repo.create(user_data.username, user_data.password)
     return new_user
 
+@router.get("/{username}")
+def get_user_by_username(username: str, db: Session = Depends(get_db)):
+    repo = UserRepository(db)
+    user = repo.get_by_username(username)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return user
+
 # Add this to actually use it and pull from app.db
 if __name__ == "__main__":
     import os

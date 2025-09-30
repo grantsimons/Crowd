@@ -1,7 +1,5 @@
-import ReactDOM from 'react-dom/client';
 import React, {useEffect, useState} from 'react';
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
-import {App} from './App'
+import { useNavigate } from 'react-router-dom';
 import './index.css'
 import { Users, type User } from '../api/client'  // Add this line
 
@@ -13,7 +11,7 @@ function sleep(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function SignUp() { 
+export function SignUp() { 
 
     useEffect(() => {
         document.title = 'sign up';
@@ -27,8 +25,6 @@ function SignUp() {
             setUserPairs(pairs);
         });
     }, []);
-
-    print(userPairs);
 
     const [username, set_user_name] = useState('');
     const [password, set_password] = useState('');
@@ -126,19 +122,3 @@ function SignUp() {
     ); 
 }
 
-async function fetchUsers() {
-    const users = await Users.getAll();
-    console.log(users);
-    return users;
-}
-
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<SignUp />} />
-        <Route path="/home" element={<App></App>} />
-      </Routes>
-    </BrowserRouter>
-  </React.StrictMode>
-);
