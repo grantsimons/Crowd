@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from sqlalchemy import select, func
+from sqlalchemy import select
 from app.models.models import User
 from app.core.db import SessionLocal, get_db
 from fastapi import APIRouter, Depends, HTTPException
@@ -25,12 +25,6 @@ class UserRepository:
         return new_user
 
 router = APIRouter(prefix="/users", tags=["users"])
-
-@router.get("")
-def get_all_users(db: Session = Depends(get_db)):
-    repo = UserRepository(db)
-    users = repo.get_all()
-    return users
 
 class UserCreate(BaseModel):
     username: str

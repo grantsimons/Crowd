@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import './index.css'
-import { Users, type User } from '../api/client'  // Add this line
+import { Users } from '../api/client'  // Add this line
 
 function print(s: any) {
     console.log(s);
@@ -15,15 +15,6 @@ export function SignUp() {
 
     useEffect(() => {
         document.title = 'sign up';
-    }, []);
-
-    const [userPairs, setUserPairs] = useState<Set<[string, string]>>(new Set());
-
-    useEffect(() => {
-        Users.getAll().then((users) => {
-            const pairs = new Set<[string, string]>(users.map((u: User) => [u.username, u.password]));
-            setUserPairs(pairs);
-        });
     }, []);
 
     const [username, set_user_name] = useState('');
@@ -43,11 +34,6 @@ export function SignUp() {
             
             alert(`User created successfully! Username: ${newUser.username}`);
             
-            // Refresh the user pairs to include the new user
-            const updatedUsers = await Users.getAll();
-            const pairs = new Set<[string, string]>(updatedUsers.map((u: User) => [u.username, u.password]));
-            setUserPairs(pairs);
-            
             set_user_name(''); // clear input
             set_password('');
         } catch (error) {
@@ -58,13 +44,19 @@ export function SignUp() {
 
     const navigate = useNavigate();
 
-    function handle_login(e: React.FormEvent) {
+    async function handle_login(e: React.FormEvent) {
         e.preventDefault();
 
-        const savedInPairs = [...userPairs].some(([u, p]) => u === login_username && p === login_password);
-        if (savedInPairs) {
-            navigate('/home');
-        } else {
+        try {
+            // Call backend to get user by username
+            const user = await Users.getByUsername(login_username);
+            if (user && user.password === login_password) {
+                navigate('/home');
+            } else {
+                alert('stop trying to cheat your way into the system. sign up before you try to login in dumbass');
+            }
+        } catch (error) {
+            console.error('Error during login:', error);
             alert('stop trying to cheat your way into the system. sign up before you try to login in dumbass');
         }
     }
@@ -115,8 +107,6 @@ export function SignUp() {
 
                 <button type="submit">submit</button>
             </form>
-
-            
 
         </main>
     ); 
