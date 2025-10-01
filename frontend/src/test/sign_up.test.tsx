@@ -109,7 +109,7 @@ describe('sign up', () => {
         const loginButton = buttons[1]
         await user.click(loginButton)
 
-        expect(alertSpy).toHaveBeenCalledWith('stop trying to cheat your way into the system. sign up before you try to login in dumbass')
+        expect(alertSpy).toHaveBeenCalledWith('username or password not found')
 
         alertSpy.mockRestore()
     })
@@ -140,7 +140,7 @@ describe('sign up', () => {
         const loginButton = buttons[1]
         await user.click(loginButton)
 
-        expect(alertSpy).toHaveBeenCalledWith('stop trying to cheat your way into the system. sign up before you try to login in dumbass')
+        expect(alertSpy).toHaveBeenCalledWith('username or password not found')
 
         alertSpy.mockRestore()
     })

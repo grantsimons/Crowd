@@ -53,11 +53,11 @@ export function SignUp() {
             if (user && user.password === login_password) {
                 navigate('/home');
             } else {
-                alert('stop trying to cheat your way into the system. sign up before you try to login in dumbass');
+                alert('username or password not found');
             }
         } catch (error) {
             console.error('Error during login:', error);
-            alert('stop trying to cheat your way into the system. sign up before you try to login in dumbass');
+            alert('error logging in');
         }
     }
 
