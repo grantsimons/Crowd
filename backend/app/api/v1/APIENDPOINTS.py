@@ -45,6 +45,29 @@ def create_user(user: createUser):
         print(f"Error creating user: {str(e)}")
         raise HTTPException(status_code=400, detail=f"Error creating user: {str(e)}")
 
+@router.put("/user/modify/{user_id}")
+def modify_user(user_id: str, user: createUser):
+    try:
+        session = sessionmaker(bind=alchemyengineUsers)()
+        existing_user = session.query(DBTableUser).filter(DBTableUser.user_id == user_id).first()
+        if not existing_user:
+            session.close()
+            return {"message": "User not found"}
+
+        existing_user.first_name = user.first_name
+        existing_user.last_name = user.last_name
+        existing_user.phone_number = user.phone_number
+        existing_user.email = user.email
+        existing_user.bio = user.bio
+        existing_user.age = user.age
+        existing_user.vibe = user.vibe
+
+        session.commit()
+        session.close()
+        return {"message": "User updated successfully"}
+    except Exception as e:
+        return {"message": "Error updating user", "error": str(e)}
+
 @router.get("/user/{user_id}", response_model=UserRead)
 def get_user(user_id: str):
     try:
