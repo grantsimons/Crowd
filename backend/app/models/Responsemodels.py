@@ -47,6 +47,17 @@ class UserRead(BaseModel):
     bio: str
     age: int
     vibe: str
+class User(Base):
+    __tablename__ = "users"
+
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    username: Mapped[str] = mapped_column(String(80), unique=True, nullable=False, index=True)
+    password: Mapped[str] = mapped_column(String(255), nullable=False)  # store hashed passwords, not plaintext
+
+    __table_args__ = (
+        UniqueConstraint("username", name="uq_user_username"),
+    )
+
 
 # Helpful index for ordering by creation time
 Index("ix_ideas_created", Idea.created_at.desc())

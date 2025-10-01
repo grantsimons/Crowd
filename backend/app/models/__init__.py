@@ -1,4 +1,4 @@
-from .Responsemodels import Idea, Vote
+from .models import Idea, Vote, User
 
-__all__ = ["Idea", "Vote"]
+__all__ = ["Idea", "Vote", "User"]
 
