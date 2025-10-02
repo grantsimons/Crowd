@@ -4,7 +4,7 @@ from app.models.Responsemodels import User
 from app.core.db import SessionLocal, get_db
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
-from app.api.v1.APIENDPOINTS import create_user
+import app.api.v1.APIENDPOINTS
 from app.models.CrowdAPIModels import createUser
 class UserRepository:
     def __init__(self, db: Session):
@@ -42,13 +42,15 @@ def create_user(user_data: UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Username already exists")
     
     # Create new user
-    new_user = repo.create(user_data.username, user_data.password)
-
-    #Create stock user in user_entries.db
-    stockUser = createUser(
-        user_id=new_user.id
-    )
-    create_user(stockUser)
+    try:
+        new_user = repo.create(user_data.username, user_data.password)
+        stockUser = createUser(
+            user_id=str(new_user.id)
+        )
+        app.api.v1.APIENDPOINTS.create_user(stockUser)
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=500, detail="Error creating user")
 
     return new_user
 

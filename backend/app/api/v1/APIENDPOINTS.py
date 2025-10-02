@@ -70,6 +70,7 @@ def modify_user(user_id: str, user: createUser):
 
 @router.get("/user/{user_id}", response_model=UserRead)
 def get_user(user_id: str):
+    print(f"Fetching user with ID: {user_id}")
     try:
         session = sessionmaker(bind=alchemyengineUsers)()
         user = session.query(DBTableUser).filter(DBTableUser.user_id == user_id).first()

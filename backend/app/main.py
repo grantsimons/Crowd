@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from .core.settings import get_settings
 from .api.v1.health import router as health_router
 from .api.v1.ideas import router as ideas_router
+from .api.v1.APIENDPOINTS import router as api_endpoints_router
 
 import sys
 from pathlib import Path
@@ -28,6 +29,7 @@ def create_app() -> FastAPI:
     app.include_router(health_router, prefix="/api/v1")
     app.include_router(ideas_router, prefix="/api/v1")
     app.include_router(users_router, prefix="/api/v1")
+    app.include_router(api_endpoints_router, prefix="/api/v1")
 
     return app
 

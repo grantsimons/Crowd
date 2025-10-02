@@ -1,4 +1,4 @@
-const baseURL = import.meta.env.VITE_API_URL ?? 'http://localhost:8000'
+const baseURL = (import.meta as any).env?.VITE_API_URL ?? 'http://localhost:8000'
 
 export class HttpError extends Error {
   status: number
@@ -78,12 +78,25 @@ export type User = {
   password: string
 }
 
+export type UserInfo = {
+  user_id: string
+  first_name: string
+  last_name: string
+  phone_number: string
+  email: string
+  bio: string
+  age: number
+  vibe: string
+}
+
 export const Users = {
   getByUsername(username: string) {
     return fetchJson<User | null>(`/api/v1/users/${username}`)
   },
   create(payload: { username: string; password: string }) {
     return fetchJson<User>(`/api/v1/users`, { method: 'POST', body: JSON.stringify(payload) })
+  },
+  getUserInfo(userId: string) {
+    return fetchJson<UserInfo>(`/api/v1/user/${userId}`)
   }
 }
-
