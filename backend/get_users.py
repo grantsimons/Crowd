@@ -4,7 +4,8 @@ from app.models.Responsemodels import User
 from app.core.db import SessionLocal, get_db
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
-
+from app.api.v1.APIENDPOINTS import create_user
+from app.models.CrowdAPIModels import createUser
 class UserRepository:
     def __init__(self, db: Session):
         self.db = db
@@ -22,6 +23,8 @@ class UserRepository:
         self.db.add(new_user)
         self.db.commit()
         self.db.refresh(new_user)
+
+
         return new_user
 
 router = APIRouter(prefix="/users", tags=["users"])
@@ -40,6 +43,13 @@ def create_user(user_data: UserCreate, db: Session = Depends(get_db)):
     
     # Create new user
     new_user = repo.create(user_data.username, user_data.password)
+
+    #Create stock user in user_entries.db
+    stockUser = createUser(
+        user_id=new_user.id
+    )
+    create_user(stockUser)
+
     return new_user
 
 @router.get("/{username}")
