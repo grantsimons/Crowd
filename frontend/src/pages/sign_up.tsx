@@ -51,7 +51,7 @@ export function SignUp() {
             // Call backend to get user by username
             const user = await Users.getByUsername(login_username);
             if (user && user.password === login_password) {
-                navigate('/home');
+                navigate(`/home/${user.id}`);
             } else {
                 alert('stop trying to cheat your way into the system. sign up before you try to login in dumbass');
             }

@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import select
-from app.models.models import User
+from app.models.Responsemodels import User
 from app.core.db import SessionLocal, get_db
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
