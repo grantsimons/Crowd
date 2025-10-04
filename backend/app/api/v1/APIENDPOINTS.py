@@ -48,6 +48,8 @@ def create_user(user: createUser):
 @router.put("/user/modify/{user_id}")
 def modify_user(user_id: str, user: createUser):
     try:
+        print(user_id)
+        print(user)
         session = sessionmaker(bind=alchemyengineUsers)()
         existing_user = session.query(DBTableUser).filter(DBTableUser.user_id == user_id).first()
         if not existing_user:

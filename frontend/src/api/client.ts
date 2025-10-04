@@ -79,7 +79,7 @@ export type User = {
 }
 
 export type UserInfo = {
-  user_id: string
+  user_id: int
   first_name: string
   last_name: string
   phone_number: string
@@ -98,5 +98,11 @@ export const Users = {
   },
   getUserInfo(userId: string) {
     return fetchJson<UserInfo>(`/api/v1/user/${userId}`)
+  },
+  updateUser(userId: string, payload: UserInfo) {
+    return fetchJson<{ message: string }>(`/api/v1/user/modify/${userId}`, { 
+      method: 'PUT', 
+      body: JSON.stringify(payload) 
+    })
   }
 }

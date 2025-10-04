@@ -39,7 +39,7 @@ class Vote(Base):
     )
 
 class UserRead(BaseModel):
-    user_id: int
+    user_id: str
     first_name: str
     last_name: str
     phone_number: str
