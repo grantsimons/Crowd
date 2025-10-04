@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import './index.css'
 import { Users } from '../api/client'  // Add this line
+import { useUser } from '../contexts/UserContext';
 
 function print(s: any) {
     console.log(s);
@@ -12,6 +13,7 @@ function sleep(ms: number): Promise<void> {
 }
 
 export function SignUp() { 
+    const { setUserId } = useUser();
 
     useEffect(() => {
         document.title = 'sign up';
@@ -32,6 +34,9 @@ export function SignUp() {
                 password: password
             });
             
+            // Store the user ID in context
+            setUserId(newUser.id);
+            
             alert(`User created successfully! Username: ${newUser.username}`);
             
             set_user_name(''); // clear input
@@ -51,6 +56,8 @@ export function SignUp() {
             // Call backend to get user by username
             const user = await Users.getByUsername(login_username);
             if (user && user.password === login_password) {
+                // Store the user ID in context
+                setUserId(user.id);
                 navigate('/home');
             } else {
                 alert('username or password not found');

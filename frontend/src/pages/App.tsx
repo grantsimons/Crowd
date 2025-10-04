@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { HttpError, Idea, Ideas } from '../api/client'
 import './index.css'
+import { useUser } from '../contexts/UserContext';
 
 
 type State =
@@ -9,6 +10,7 @@ type State =
   | { status: 'ready'; data: { items: Idea[]; total: number; page: number; size: number } }
 
 export function App() {
+  const { userId } = useUser();
   const [query, setQuery] = useState('')
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
@@ -80,7 +82,12 @@ export function App() {
 
   return (
     <div className="max-w-3xl mx-auto p-6 space-y-6">
-      <h1 className="text-2xl font-bold">Crowd Ideas</h1>
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold">Crowd Ideas</h1>
+        <div className="text-sm text-gray-600">
+          User ID: {userId !== null ? userId : 'Not logged in'}
+        </div>
+      </div>
 
       <form className="flex gap-2" onSubmit={onCreate} aria-label="create-idea-form">
         <input

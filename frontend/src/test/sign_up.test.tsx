@@ -5,6 +5,7 @@ import '@testing-library/jest-dom'
 import { BrowserRouter, MemoryRouter, Routes, Route } from 'react-router-dom'
 import userEvent from '@testing-library/user-event'
 import { Users } from '../api/client'
+import { TestWrapper } from './TestWrapper'
 
 // Mock the Users API
 vi.mock('../api/client', () => ({
@@ -20,7 +21,8 @@ describe('sign up', () => {
             render(
                 <BrowserRouter>
                     <SignUp />
-                </BrowserRouter>
+                </BrowserRouter>,
+                { wrapper: TestWrapper }
             )
         })
 
@@ -52,7 +54,8 @@ describe('sign up', () => {
                         <Route path="/signup" element={<SignUp />} />
                         <Route path="/home" element={<div>Crowd Ideas</div>} />
                     </Routes>
-                </MemoryRouter>
+                </MemoryRouter>,
+                { wrapper: TestWrapper }
             )
         })
 
@@ -93,7 +96,8 @@ describe('sign up', () => {
             render(
                 <BrowserRouter>
                     <SignUp />
-                </BrowserRouter>
+                </BrowserRouter>,
+                { wrapper: TestWrapper }
             )
         })
 
@@ -125,7 +129,8 @@ describe('sign up', () => {
             render(
                 <BrowserRouter>
                     <SignUp />
-                </BrowserRouter>
+                </BrowserRouter>,
+                { wrapper: TestWrapper }
             )
         })
 
@@ -156,7 +161,8 @@ describe('sign up', () => {
             render(
                 <BrowserRouter>
                     <SignUp />
-                </BrowserRouter>
+                </BrowserRouter>,
+                { wrapper: TestWrapper }
             )
         })
 

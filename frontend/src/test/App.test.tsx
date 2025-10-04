@@ -2,10 +2,11 @@ import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { App } from '../pages/App'
+import { TestWrapper } from './TestWrapper'
 
 describe('App', () => {
   it('lists, creates and votes ideas', async () => {
-    render(<App />)
+    render(<App />, { wrapper: TestWrapper })
 
     // list populated by MSW
     expect(await screen.findByText('Dark Mode')).toBeInTheDocument()
