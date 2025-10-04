@@ -8,6 +8,7 @@
     "build": "vite build",
     "preview": "vite preview --port 5173",
     "test": "vitest",
+    "test:watch": "vitest --watch",
     "test:cov": "vitest run --coverage"
   },
   "dependencies": {

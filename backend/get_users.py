@@ -10,10 +10,6 @@ class UserRepository:
     def __init__(self, db: Session):
         self.db = db
 
-    def get_all(self) -> list[User]:
-        stmt = select(User)
-        return list(self.db.scalars(stmt).all())
-
     def get_by_username(self, username: str) -> User:
         stmt = select(User).where(User.username == username)
         return self.db.scalar(stmt)
@@ -33,7 +29,7 @@ class UserCreate(BaseModel):
     username: str
     password: str
 
-@router.post("")
+@router.post("", name="create_user")
 def create_user(user_data: UserCreate, db: Session = Depends(get_db)):
     repo = UserRepository(db)
     # Check if user already exists
@@ -54,7 +50,7 @@ def create_user(user_data: UserCreate, db: Session = Depends(get_db)):
 
     return new_user
 
-@router.get("/{username}")
+@router.get("/{username}", name="get_user")
 def get_user_by_username(username: str, db: Session = Depends(get_db)):
     repo = UserRepository(db)
     user = repo.get_by_username(username)
@@ -69,5 +65,4 @@ if __name__ == "__main__":
     
     with SessionLocal() as db:
         repo = UserRepository(db)
-        users = repo.get_all()
 

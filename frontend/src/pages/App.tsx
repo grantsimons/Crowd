@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { HttpError, Idea, Ideas } from '../api/client'
 import './index.css'
+import { useUser } from '../contexts/UserContext';
 
 
 type State =
@@ -9,6 +10,7 @@ type State =
   | { status: 'ready'; data: { items: Idea[]; total: number; page: number; size: number } }
 
 export function App() {
+  const { userId } = useUser();
   const [query, setQuery] = useState('')
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')

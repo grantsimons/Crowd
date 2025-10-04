@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import './index.css'
 import { Users } from '../api/client'  // Add this line
+import { useUser } from '../contexts/UserContext';
 
 function print(s: any) {
     console.log(s);
@@ -12,6 +13,7 @@ function sleep(ms: number): Promise<void> {
 }
 
 export function SignUp() { 
+    const { setUserId } = useUser();
 
     useEffect(() => {
         document.title = 'sign up';
@@ -31,6 +33,9 @@ export function SignUp() {
                 username: username,
                 password: password
             });
+            
+            // Store the user ID in context
+            setUserId(newUser.id);
             
             alert(`User created successfully! Username: ${newUser.username}`);
             
@@ -53,11 +58,11 @@ export function SignUp() {
             if (user && user.password === login_password) {
                 navigate(`/user-info?id=${user.id}`);
             } else {
-                alert('stop trying to cheat your way into the system. sign up before you try to login in dumbass');
+                alert('username or password not found');
             }
         } catch (error) {
             console.error('Error during login:', error);
-            alert('stop trying to cheat your way into the system. sign up before you try to login in dumbass');
+            alert('error logging in');
         }
     }
 
